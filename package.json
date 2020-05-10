@@ -1,0 +1,29 @@
+{
+  "name": "carbonara",
+  "version": "0.0.1",
+  "description": "api for carbon",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/index.js",
+    "nodemon": "nodemon -L src/index.js",
+    "prettier:write": "prettier --write --ignore-path .gitignore .",
+    "prettier:check": "prettier --check --ignore-path .gitignore ."
+  },
+  "keywords": [
+    "carbon",
+    "api"
+  ],
+  "author": "Peter Solopov <peter@solopov.dev>",
+  "license": "MIT",
+  "dependencies": {
+    "chrome-aws-lambda": "^3.0.4",
+    "puppeteer-core": "^3.0.4",
+    "raw-body": "^2.4.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.3",
+    "now": "^19.0.0",
+    "prettier": "^2.0.5"
+  }
+}

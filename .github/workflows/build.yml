@@ -1,0 +1,37 @@
+name: build
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name:
+        uses: actions/setup-node@v1
+
+      - run: npm ci
+      - run: npm run prettier:check
+
+  push:
+    needs: lint
+
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Log into dockerhub registry
+        run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u petersolopov --password-stdin
+
+      - name: Push images
+        run: |
+          docker build --file Dockerfile --build-arg ci-flags="--only=production" -t petersolopov/carbonara .
+          docker push petersolopov/carbonara:latest
