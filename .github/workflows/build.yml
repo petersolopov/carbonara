@@ -19,8 +19,23 @@ jobs:
       - run: npm ci
       - run: npm run prettier:check
 
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - run: docker build -t local/carbonara .
+      - run: docker run -v $(pwd)/test/images:/home/pptruser/app/test/images --rm --cap-add=SYS_ADMIN  local/carbonara npm test
+
+      - uses: actions/upload-artifact@v2
+        if: failure()
+        with:
+          name: screenshots
+          path: test/images/
+
   push:
-    needs: lint
+    needs: [lint, test]
 
     runs-on: ubuntu-latest
     if: github.event_name == 'push'
@@ -33,5 +48,5 @@ jobs:
 
       - name: Push images
         run: |
-          docker build --file Dockerfile --build-arg ci-flags="--only=production" -t petersolopov/carbonara .
+          docker build --file Dockerfile --build-arg npm-ci-params="--only=production" -t petersolopov/carbonara .
           docker push petersolopov/carbonara:latest

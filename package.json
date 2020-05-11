@@ -4,7 +4,7 @@
   "description": "api for carbon",
   "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha --timeout 10000",
     "start": "node src/index.js",
     "nodemon": "nodemon -L src/index.js",
     "prettier:write": "prettier --write --ignore-path .gitignore .",
@@ -22,6 +22,8 @@
     "raw-body": "^2.4.1"
   },
   "devDependencies": {
+    "mocha": "^7.1.2",
+    "node-fetch": "^2.6.0",
     "nodemon": "^2.0.3",
     "now": "^19.0.0",
     "prettier": "^2.0.5"

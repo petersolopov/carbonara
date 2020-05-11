@@ -1,6 +1,11 @@
-FROM node:12-alpine
+FROM node:12-alpine3.11
+
+ARG npm-ci-params
 
 WORKDIR /home/pptruser/app
+COPY package*.json ./
+RUN npm ci $npm-ci-params
+COPY . .
 
 # Puppeteer deps
 RUN apk --update add --no-cache \
@@ -21,11 +26,6 @@ RUN addgroup -S pptruser && adduser -S -g pptruser pptruser \
 
 # Run everything after as non-privileged user.
 USER pptruser
-
-COPY package*.json ./
-RUN npm install
-
-COPY . .
 
 EXPOSE 3000
 CMD ["npm", "start"]
