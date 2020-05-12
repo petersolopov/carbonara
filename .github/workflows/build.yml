@@ -50,3 +50,18 @@ jobs:
         run: |
           docker build --file Dockerfile --build-arg npm-ci-params="--only=production" -t petersolopov/carbonara .
           docker push petersolopov/carbonara:latest
+
+  deploy:
+    needs: [push]
+
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: amondnet/now-deployment@v2
+        with:
+          zeit-token: ${{ secrets.ZEIT_TOKEN }}
+          now-args: "--prod"
+          now-org-id: ${{ secrets.ZEIT_ORG_ID}}
+          now-project-id: ${{ secrets.ZEIT_PROJECT_ID}}
