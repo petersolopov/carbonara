@@ -50,10 +50,9 @@ module.exports = async (ctx) => {
 
   const element = await page.$(config.carbon.imageQuerySelector);
   const image = await element.screenshot();
+  await page.close();
 
   res.setHeader("Content-Type", "image/png");
   res.statusCode = 200;
   res.end(image);
-
-  await page.close();
 };
