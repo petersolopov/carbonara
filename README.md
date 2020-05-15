@@ -77,9 +77,18 @@ You can use a docker container that running the server with the same API.
 
 ## Local development
 
-Docker is required. Run development server on 3000 port:
+Docker is required.
 
-`docker run -v $(pwd):/home/pptruser/app/ -p 3000:3000 -it --rm --cap-add=SYS_ADMIN $(docker build -q .) npm run nodemon`
+**Development server**
+
+- `docker run -v $(pwd):/home/pptruser/app/ -p 3000:3000 -it --rm --cap-add=SYS_ADMIN $(docker build -q .) npm run nodemon` — run development server on 3000 port
+
+**Running test**
+
+Build container `docker build -t local/carbonara .` and run test:
+
+- `docker run -it --rm --cap-add=SYS_ADMIN local/carbonara npm test` — run test
+- `docker run -v $(pwd):/home/pptruser/app/ -it --rm --cap-add=SYS_ADMIN local/carbonara npm test` — run test with update or add new screenshots
 
 ## LICENSE
 
