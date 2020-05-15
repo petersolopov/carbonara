@@ -118,4 +118,32 @@ describe("POST /api/cook", () => {
       "option 'backgroundColor' has type 'number', but 'string' expected"
     );
   });
+
+  it("should change dropShadow", async () => {
+    const imageName = "changedDropShadow";
+    const params = {
+      code: "const sum = (a, b) => a + b",
+      dropShadow: false,
+    };
+    const response = await fetchImage(params);
+    assert.ok(response.ok);
+    const imageBuffer = await response.buffer();
+    await compareImage({ imageName, imageBuffer });
+  });
+
+  it("should validate dropShadow", async () => {
+    const imageName = "changedDropShadow";
+    const params = {
+      code: "const sum = (a, b) => a + b",
+      dropShadow: "hello",
+    };
+    const response = await fetchImage(params);
+    assert.ok(!response.ok);
+
+    const body = await response.json();
+    assert.equal(
+      body.error,
+      "option 'dropShadow' has type 'string', but 'boolean' expected"
+    );
+  });
 });
