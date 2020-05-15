@@ -79,4 +79,43 @@ describe("POST /api/cook", () => {
     const imageBuffer = await response.buffer();
     await compareImage({ imageName, imageBuffer });
   });
+
+  it("should change background color with rgba", async () => {
+    const imageName = "changedBackgroundColorRgba";
+    const params = {
+      code: "const sum = (a, b) => a + b",
+      backgroundColor: "rgba(31,129,109,1)",
+    };
+    const response = await fetchImage(params);
+    assert.ok(response.ok);
+    const imageBuffer = await response.buffer();
+    await compareImage({ imageName, imageBuffer });
+  });
+
+  it("should change background color with hex", async () => {
+    const imageName = "changedBackgroundColorHex";
+    const params = {
+      code: "const sum = (a, b) => a + b",
+      backgroundColor: "#000",
+    };
+    const response = await fetchImage(params);
+    assert.ok(response.ok);
+    const imageBuffer = await response.buffer();
+    await compareImage({ imageName, imageBuffer });
+  });
+
+  it("should validate backgroundColor", async () => {
+    const params = {
+      code: "const sum = (a, b) => a + b",
+      backgroundColor: 42,
+    };
+    const response = await fetchImage(params);
+    assert.ok(!response.ok);
+
+    const body = await response.json();
+    assert.equal(
+      body.error,
+      "option 'backgroundColor' has type 'number', but 'string' expected"
+    );
+  });
 });
