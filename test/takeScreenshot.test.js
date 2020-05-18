@@ -69,7 +69,7 @@ describe("POST /api/cook", () => {
   });
 
   it("should change theme", async () => {
-    const imageName = "changedTheme";
+    const imageName = "theme";
     const params = {
       code: "const sum = (a, b) => a + b",
       theme: "monokai",
@@ -81,7 +81,7 @@ describe("POST /api/cook", () => {
   });
 
   it("should change background color with rgba", async () => {
-    const imageName = "changedBackgroundColorRgba";
+    const imageName = "backgroundColorRgba";
     const params = {
       code: "const sum = (a, b) => a + b",
       backgroundColor: "rgba(31,129,109,1)",
@@ -93,7 +93,7 @@ describe("POST /api/cook", () => {
   });
 
   it("should change background color with hex", async () => {
-    const imageName = "changedBackgroundColorHex";
+    const imageName = "backgroundColorHex";
     const params = {
       code: "const sum = (a, b) => a + b",
       backgroundColor: "#000",
@@ -113,14 +113,14 @@ describe("POST /api/cook", () => {
     assert.ok(!response.ok);
 
     const body = await response.json();
-    assert.equal(
+    assert.strictEqual(
       body.error,
       "option 'backgroundColor' has type 'number', but 'string' expected"
     );
   });
 
   it("should change dropShadow", async () => {
-    const imageName = "changedDropShadow";
+    const imageName = "dropShadow";
     const params = {
       code: "const sum = (a, b) => a + b",
       dropShadow: false,
@@ -132,7 +132,6 @@ describe("POST /api/cook", () => {
   });
 
   it("should validate dropShadow", async () => {
-    const imageName = "changedDropShadow";
     const params = {
       code: "const sum = (a, b) => a + b",
       dropShadow: "hello",
@@ -141,7 +140,7 @@ describe("POST /api/cook", () => {
     assert.ok(!response.ok);
 
     const body = await response.json();
-    assert.equal(
+    assert.strictEqual(
       body.error,
       "option 'dropShadow' has type 'string', but 'boolean' expected"
     );
