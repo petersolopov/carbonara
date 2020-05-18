@@ -6,7 +6,7 @@ const config = {
   },
   carbon: {
     url: "https://carbon.now.sh/",
-    imageQuerySelector: "#export-container",
+    imageQuerySelector: "#export-container  .container-bg",
   },
 };
 
