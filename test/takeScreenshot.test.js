@@ -146,4 +146,58 @@ describe("POST /api/cook", () => {
       "option 'dropShadow' has type 'string', but 'boolean' expected"
     );
   });
+
+  it("should change dropShadowBlurRadius", async () => {
+    const imageName = "dropShadowBlurRadius";
+    const params = {
+      code: "const sum = (a, b) => a + b",
+      dropShadowBlurRadius: "10px",
+    };
+    const response = await fetchImage(params);
+    assert.ok(response.ok);
+    const imageBuffer = await response.buffer();
+    await compareImage({ imageName, imageBuffer });
+  });
+
+  it("should validate dropShadowBlurRadius", async () => {
+    const params = {
+      code: "const sum = (a, b) => a + b",
+      dropShadowBlurRadius: 10,
+    };
+    const response = await fetchImage(params);
+    assert.ok(!response.ok);
+
+    const body = await response.json();
+    assert.strictEqual(
+      body.error,
+      "option 'dropShadowBlurRadius' has type 'number', but 'string' expected"
+    );
+  });
+
+  it("should change dropShadowOffsetY", async () => {
+    const imageName = "dropShadowOffsetY";
+    const params = {
+      code: "const sum = (a, b) => a + b",
+      dropShadowOffsetY: "100px",
+    };
+    const response = await fetchImage(params);
+    assert.ok(response.ok);
+    const imageBuffer = await response.buffer();
+    await compareImage({ imageName, imageBuffer });
+  });
+
+  it("should validate dropShadowOffsetY", async () => {
+    const params = {
+      code: "const sum = (a, b) => a + b",
+      dropShadowOffsetY: false,
+    };
+    const response = await fetchImage(params);
+    assert.ok(!response.ok);
+
+    const body = await response.json();
+    assert.strictEqual(
+      body.error,
+      "option 'dropShadowOffsetY' has type 'boolean', but 'string' expected"
+    );
+  });
 });
