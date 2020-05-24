@@ -23,8 +23,8 @@ Send POST `https://carbonara.now.sh/api/cook` to take an image of code snippet.
 | `dropShadow`           | `true`                     | boolean | Turn on/off shadow                               |
 | `dropShadowBlurRadius` | `"68px"`                   | string  | shadow blur radius                               |
 | `dropShadowOffsetY`    | `"20px"`                   | string  | shadow offset y                                  |
-| `exportSize`           | `"2x"`                     | string  | resolution of exported image, e.g. '1x', '3x'    |
-| `fontFamily`           | `"Hack"`                   | string  | font family, e.g. 'JetBrains Mono', 'Fira Code'. |
+| `exportSize`           | `"2x"`                     | string  | resolution of exported image, e.g. `1x`, `3x`    |
+| `fontFamily`           | `"Hack"`                   | string  | font family, e.g. `JetBrains Mono`, `Fira Code`. |
 | `firstLineNumber`      | `1`                        | number  | first line number                                |
 | `language`             | `"auto"`                   | string  | programing language for properly highlighting    |
 | `lineHeight`           | `"133%"`                   | string  | line height                                      |
