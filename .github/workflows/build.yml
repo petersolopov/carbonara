@@ -65,3 +65,22 @@ jobs:
           now-args: "--prod"
           now-org-id: ${{ secrets.ZEIT_ORG_ID}}
           now-project-id: ${{ secrets.ZEIT_PROJECT_ID}}
+
+  notify:
+    needs: [lint, test, push, deploy]
+
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && failure()
+
+    steps:
+      - name: notify
+        run: |
+          curl -s https://api.telegram.org/bot$TELEGRAM_TOKEN/sendMessage \
+          -d parse_mode=markdown \
+          -d chat_id=$CHAT_ID \
+          -d text="🚫 [$GITHUB_REPOSITORY](https://github.com/$GITHUB_REPOSITORY/actions/runs/$RUN_ID) build action was failed" \
+          > /dev/null
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          CHAT_ID: ${{ secrets.CHAT_ID}}
+          RUN_ID: ${{ github.run_id }}
