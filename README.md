@@ -68,27 +68,41 @@ curl https://carbonara.now.sh/api/cook/ \
 
 These options exist in exported config but there is not a possibility pass them via URL: `backgroundImage`, `backgroundImageSelection`, `backgroundMode`, `squaredImage`, `hiddenCharacters`, `name`, `loading`, `icon`, `isVisible`.
 
-## Docker
+## Docker container
 
-You can use a docker container that running the server with the same API.
+Running the server in 3000 port with docker:
 
-- `docker run -p 3000:3000 -it --cap-add=SYS_ADMIN petersolopov/carbonara` — running `petersolopov/carbonara` container in 3000 port.
-- `docker run -p 3000:3000 -it --rm --cap-add=SYS_ADMIN $(docker build -q .)` — building locally container and running in 3000 port.
+```bash
+docker run -p 3000:3000 -it --cap-add=SYS_ADMIN petersolopov/carbonara
+```
 
-## Local development
+## Running test
 
-Docker is required.
+```bash
+docker build -t local/carbonara .
+docker run -it --rm --cap-add=SYS_ADMIN local/carbonara npm test
+```
 
-**Development server**
+## Development
 
-- `docker run -v $(pwd):/home/pptruser/app/ -p 3000:3000 -it --rm --cap-add=SYS_ADMIN $(docker build -q .) npm run nodemon` — run development server on 3000 port
+There are two main files:
 
-**Running test**
+- `api/cook.js` — lambda function that running in production.
+- `src/index.js` – nodejs server that running in docker container.
 
-Build container `docker build -t local/carbonara .` and run test:
+Running development server:
 
-- `docker run -it --rm --cap-add=SYS_ADMIN local/carbonara npm test` — run test
-- `docker run -v $(pwd):/home/pptruser/app/ -it --rm --cap-add=SYS_ADMIN local/carbonara npm test` — run test with update or add new screenshots
+```bash
+docker build -t local/carbonara .
+docker run -v $(pwd):/home/pptruser/app/ -p 3000:3000 -it --rm --cap-add=SYS_ADMIN $(docker build -q .) npm run nodemon
+```
+
+Updating test images:
+
+```bash
+docker build -t local/carbonara .
+docker run -v $(pwd):/home/pptruser/app/ -it --rm --cap-add=SYS_ADMIN local/carbonara npm test
+```
 
 ## LICENSE
 
