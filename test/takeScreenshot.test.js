@@ -225,7 +225,7 @@ describe("POST /api/cook", () => {
       body.error,
       "option 'exportSize' has type 'number', but 'string' expected"
     );
-  })
+  });
 
   it("should change fontFamily to JetBrains Mono", async () => {
     const imageName = "fontFamilyJetBrainsMono";
@@ -238,7 +238,6 @@ describe("POST /api/cook", () => {
     const imageBuffer = await response.buffer();
     await compareImage({ imageName, imageBuffer });
   });
-
 
   it("should change fontFamily to Fira Code", async () => {
     const imageName = "fontFamilyFiraCode";
@@ -265,5 +264,5 @@ describe("POST /api/cook", () => {
       body.error,
       "option 'fontFamily' has type 'number', but 'string' expected"
     );
-  })
+  });
 });
