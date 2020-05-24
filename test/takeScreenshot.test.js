@@ -199,4 +199,31 @@ describe("POST /api/cook", () => {
       "option 'dropShadowOffsetY' has type 'boolean', but 'string' expected"
     );
   });
+
+  it("should change exportSize", async () => {
+    const imageName = "exportSize";
+    const params = {
+      code: "const sum = (a, b) => a + b",
+      exportSize: "1x",
+    };
+    const response = await fetchImage(params);
+    assert.ok(response.ok);
+    const imageBuffer = await response.buffer();
+    await compareImage({ imageName, imageBuffer });
+  });
+
+  it("should validate exportSize", async () => {
+    const params = {
+      code: "const sum = (a, b) => a + b",
+      exportSize: 5,
+    };
+    const response = await fetchImage(params);
+    assert.ok(!response.ok);
+
+    const body = await response.json();
+    assert.strictEqual(
+      body.error,
+      "option 'exportSize' has type 'number', but 'string' expected"
+    );
+  })
 });
