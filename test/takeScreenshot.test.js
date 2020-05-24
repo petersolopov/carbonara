@@ -226,4 +226,44 @@ describe("POST /api/cook", () => {
       "option 'exportSize' has type 'number', but 'string' expected"
     );
   })
+
+  it("should change fontFamily to JetBrains Mono", async () => {
+    const imageName = "fontFamilyJetBrainsMono";
+    const params = {
+      code: "const sum = (a, b) => a + b",
+      fontFamily: "JetBrains Mono",
+    };
+    const response = await fetchImage(params);
+    assert.ok(response.ok);
+    const imageBuffer = await response.buffer();
+    await compareImage({ imageName, imageBuffer });
+  });
+
+
+  it("should change fontFamily to Fira Code", async () => {
+    const imageName = "fontFamilyFiraCode";
+    const params = {
+      code: "const sum = (a, b) => a + b",
+      fontFamily: "Fira Code",
+    };
+    const response = await fetchImage(params);
+    assert.ok(response.ok);
+    const imageBuffer = await response.buffer();
+    await compareImage({ imageName, imageBuffer });
+  });
+
+  it("should validate fontFamily", async () => {
+    const params = {
+      code: "const sum = (a, b) => a + b",
+      fontFamily: 5,
+    };
+    const response = await fetchImage(params);
+    assert.ok(!response.ok);
+
+    const body = await response.json();
+    assert.strictEqual(
+      body.error,
+      "option 'fontFamily' has type 'number', but 'string' expected"
+    );
+  })
 });
