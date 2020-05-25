@@ -46,7 +46,7 @@ Send POST `https://carbonara.now.sh/api/cook` to take an image of code snippet.
 Creating image and saving to `code.png` in terminal.
 
 ```bash
-curl https://carbonara.now.sh/api/cook/ \
+curl https://carbonara.now.sh/api/cook \
 -X POST \
 -H 'Content-Type: application/json' \
 -d '{
