@@ -265,4 +265,32 @@ describe("POST /api/cook", () => {
       "option 'fontFamily' has type 'number', but 'string' expected"
     );
   });
+
+  it("should change firstLineNumber", async () => {
+    const imageName = "firstLineNumber";
+    const params = {
+      code: "const sum = (a, b) => a + b",
+      firstLineNumber: 42,
+      lineNumbers: true,
+    };
+    const response = await fetchImage(params);
+    assert.ok(response.ok);
+    const imageBuffer = await response.buffer();
+    await compareImage({ imageName, imageBuffer });
+  });
+
+  it("should validate firstLineNumber", async () => {
+    const params = {
+      code: "const sum = (a, b) => a + b",
+      firstLineNumber: "one",
+    };
+    const response = await fetchImage(params);
+    assert.ok(!response.ok);
+
+    const body = await response.json();
+    assert.strictEqual(
+      body.error,
+      "option 'firstLineNumber' has type 'string', but 'number' expected"
+    );
+  });
 });
