@@ -293,4 +293,31 @@ describe("POST /api/cook", () => {
       "option 'firstLineNumber' has type 'string', but 'number' expected"
     );
   });
+
+  it("should change fontSize", async () => {
+    const imageName = "fontSize";
+    const params = {
+      code: "const sum = (a, b) => a + b",
+      fontSize: "30px",
+    };
+    const response = await fetchImage(params);
+    assert.ok(response.ok);
+    const imageBuffer = await response.buffer();
+    await compareImage({ imageName, imageBuffer });
+  });
+
+  it("should validate fontSize", async () => {
+    const params = {
+      code: "const sum = (a, b) => a + b",
+      fontSize: true,
+    };
+    const response = await fetchImage(params);
+    assert.ok(!response.ok);
+
+    const body = await response.json();
+    assert.strictEqual(
+      body.error,
+      "option 'fontSize' has type 'boolean', but 'string' expected"
+    );
+  });
 });
