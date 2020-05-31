@@ -320,4 +320,31 @@ describe("POST /api/cook", () => {
       "option 'fontSize' has type 'boolean', but 'string' expected"
     );
   });
+
+  it("should change language", async () => {
+    const imageName = "language";
+    const params = {
+      code: "const sum = (a, b) => a + b",
+      language: "application/x-sh",
+    };
+    const response = await fetchImage(params);
+    assert.ok(response.ok);
+    const imageBuffer = await response.buffer();
+    await compareImage({ imageName, imageBuffer });
+  });
+
+  it("should validate language", async () => {
+    const params = {
+      code: "const sum = (a, b) => a + b",
+      language: true,
+    };
+    const response = await fetchImage(params);
+    assert.ok(!response.ok);
+
+    const body = await response.json();
+    assert.strictEqual(
+      body.error,
+      "option 'language' has type 'boolean', but 'string' expected"
+    );
+  });
 });
