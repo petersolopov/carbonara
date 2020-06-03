@@ -1,4 +1,4 @@
-FROM node:12-alpine3.11
+FROM node:12.17-alpine3.11
 
 ARG npm-ci-params
 
