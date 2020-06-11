@@ -44,7 +44,7 @@ module.exports = async (ctx) => {
 
   await page.setViewport({
     width: 8192, // big enough
-    height: 128, // doesn't matter
+    height: 2048,
     deviceScaleFactor,
   });
 
