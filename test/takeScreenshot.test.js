@@ -1,6 +1,8 @@
 const fetch = require("node-fetch");
 const assert = require("assert");
 const fs = require("fs").promises;
+const PNG = require("pngjs").PNG;
+const pixelmatch = require("pixelmatch");
 
 const config = require("../src/config.js");
 const runServer = require("../src/runServer.js");
@@ -10,7 +12,10 @@ const endpoint = `${config.server.protocol}://${config.server.host}:${config.ser
 async function compareImage({ imageName, imageBuffer }) {
   let expectedImage;
   try {
-    expectedImage = await fs.readFile(`./test/images/${imageName}.png`);
+    const expectedImageBuffer = await fs.readFile(
+      `./test/images/${imageName}.png`
+    );
+    expectedImage = PNG.sync.read(expectedImageBuffer);
   } catch (error) {
     await fs.writeFile(`./test/images/${imageName}.png`, imageBuffer);
     console.log("\tnew image was successful written");
@@ -18,10 +23,22 @@ async function compareImage({ imageName, imageBuffer }) {
   }
 
   try {
-    const compared = Buffer.compare(imageBuffer, expectedImage);
+    const image = PNG.sync.read(imageBuffer);
+
+    const numDiffPixels = pixelmatch(
+      image.data,
+      expectedImage.data,
+      null,
+      expectedImage.width,
+      expectedImage.height,
+      {
+        threshold: 0.1,
+      }
+    );
+
     assert.strictEqual(
+      numDiffPixels,
       0,
-      compared,
       `screenshot comparing is failed for ${imageName}.png`
     );
   } catch (error) {
