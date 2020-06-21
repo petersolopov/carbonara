@@ -391,4 +391,31 @@ describe("POST /api/cook", () => {
       "option 'lineHeight' has type 'boolean', but 'string' expected"
     );
   });
+
+  it("should change lineNumbers", async () => {
+    const imageName = "lineNumbers";
+    const params = {
+      code: "// some comment\nconst sum = (a, b) => a + b",
+      lineNumbers: true,
+    };
+    const response = await fetchImage(params);
+    assert.ok(response.ok);
+    const imageBuffer = await response.buffer();
+    await compareImage({ imageName, imageBuffer });
+  });
+
+  it("should validate lineNumbers", async () => {
+    const params = {
+      code: "const sum = (a, b) => a + b",
+      lineNumbers: "yes",
+    };
+    const response = await fetchImage(params);
+    assert.ok(!response.ok);
+
+    const body = await response.json();
+    assert.strictEqual(
+      body.error,
+      "option 'lineNumbers' has type 'string', but 'boolean' expected"
+    );
+  });
 });
