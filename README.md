@@ -67,7 +67,7 @@ curl https://carbonara.now.sh/api/cook \
 
 ## Unsupported params
 
-These options exist in exported config but there is not a possibility pass them via URL: `backgroundImage`, `backgroundImageSelection`, `backgroundMode`, `squaredImage`, `hiddenCharacters`, `name`, `loading`, `icon`, `isVisible`.
+These options exist in exported config but there is not a possibility pass them via URL: `backgroundImage`, `backgroundImageSelection`, `backgroundMode`, `squaredImage`, `hiddenCharacters`, `name`, `loading`, `icon`, `isVisible`, `width`.
 
 ## Docker container
 

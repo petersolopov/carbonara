@@ -56,6 +56,7 @@ const ignoredOptions = [
   "loading",
   "icon",
   "isVisible",
+  "width",
 
   // add support
   "selectedLines",
