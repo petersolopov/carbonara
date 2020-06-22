@@ -418,4 +418,31 @@ describe("POST /api/cook", () => {
       "option 'lineNumbers' has type 'string', but 'boolean' expected"
     );
   });
+
+  it("should change paddingHorizontal", async () => {
+    const imageName = "paddingHorizontal";
+    const params = {
+      code: "const sum = (a, b) => a + b",
+      paddingHorizontal: "100px",
+    };
+    const response = await fetchImage(params);
+    assert.ok(response.ok);
+    const imageBuffer = await response.buffer();
+    await compareImage({ imageName, imageBuffer });
+  });
+
+  it("should validate paddingHorizontal", async () => {
+    const params = {
+      code: "const sum = (a, b) => a + b",
+      paddingHorizontal: true,
+    };
+    const response = await fetchImage(params);
+    assert.ok(!response.ok);
+
+    const body = await response.json();
+    assert.strictEqual(
+      body.error,
+      "option 'paddingHorizontal' has type 'boolean', but 'string' expected"
+    );
+  });
 });
