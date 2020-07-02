@@ -445,4 +445,31 @@ describe("POST /api/cook", () => {
       "option 'paddingHorizontal' has type 'boolean', but 'string' expected"
     );
   });
+
+  it("should change paddingVertical", async () => {
+    const imageName = "paddingVertical";
+    const params = {
+      code: "const sum = (a, b) => a + b",
+      paddingVertical: "100px",
+    };
+    const response = await fetchImage(params);
+    assert.ok(response.ok);
+    const imageBuffer = await response.buffer();
+    await compareImage({ imageName, imageBuffer });
+  });
+
+  it("should validate paddingVertical", async () => {
+    const params = {
+      code: "const sum = (a, b) => a + b",
+      paddingVertical: true,
+    };
+    const response = await fetchImage(params);
+    assert.ok(!response.ok);
+
+    const body = await response.json();
+    assert.strictEqual(
+      body.error,
+      "option 'paddingVertical' has type 'boolean', but 'string' expected"
+    );
+  });
 });
