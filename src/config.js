@@ -1,12 +1,15 @@
+const { env } = process;
+
 const config = {
   server: {
-    host: process.env.HOST || "localhost",
-    port: process.env.PORT || "3000",
-    protocol: process.env.PROTOCOL || "http",
+    host: env.HOST || "localhost",
+    port: env.PORT || "3000",
+    protocol: env.PROTOCOL || "http",
   },
   carbon: {
-    url: "https://carbon.now.sh/",
-    imageQuerySelector: "#export-container  .container-bg",
+    url: env.CARBON_URL || "https://carbon.now.sh/",
+    imageQuerySelector:
+      env.CARBON_IMG_SELECTOR || "#export-container  .container-bg",
   },
 };
 
