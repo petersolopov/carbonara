@@ -47,8 +47,11 @@ async function compareImage({ imageName, imageBuffer }) {
       `screenshot comparing is failed for ${imageName}.png`
     );
   } catch (error) {
-    await fs.writeFile(`./test/images/${imageName}.png`, imageBuffer);
-    console.log("image was updated");
+    // Writing file in CI throws error: EACCES: permission denied
+    if (process.env.CI !== "true") {
+      await fs.writeFile(`./test/images/${imageName}.png`, imageBuffer);
+      console.log("image was updated");
+    }
     throw error;
   }
 }
