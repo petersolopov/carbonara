@@ -17,9 +17,14 @@ async function compareImage({ imageName, imageBuffer }) {
     );
     expectedImage = PNG.sync.read(expectedImageBuffer);
   } catch (error) {
-    await fs.writeFile(`./test/images/${imageName}.png`, imageBuffer);
-    console.log("\tnew image was successful written");
-    return;
+    // Expected test image has not already existed. Write it
+    if (error.code === "ENOENT") {
+      await fs.writeFile(`./test/images/${imageName}.png`, imageBuffer);
+      console.log("\tnew image was successful written");
+      return;
+    }
+
+    throw error;
   }
 
   try {
