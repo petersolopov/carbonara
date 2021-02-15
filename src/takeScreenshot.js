@@ -48,8 +48,19 @@ module.exports = async (ctx) => {
     deviceScaleFactor,
   });
 
+  // remove background for transparency
+  await page.evaluate(() => {
+    document.querySelector("html").style.background = "none";
+    document.querySelector("body").style.background = "none";
+    document.querySelector(".editor").style.background = "none";
+    document.querySelector(".alpha").style.background = "none";
+    document.querySelector(".white").style.background = "none";
+  });
+
   const element = await page.$(config.carbon.imageQuerySelector);
-  const image = await element.screenshot();
+  const image = await element.screenshot({
+    omitBackground: true,
+  });
   await page.close();
 
   res.setHeader("Content-Type", "image/png");

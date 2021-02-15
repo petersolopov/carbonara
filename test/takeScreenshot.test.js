@@ -117,6 +117,18 @@ describe("POST /api/cook", () => {
     await compareImage({ imageName, imageBuffer });
   });
 
+  it("should change background color with transparency", async () => {
+    const imageName = "transparentBackgroundColor";
+    const params = {
+      code: "const sum = (a, b) => a + b",
+      backgroundColor: "rgba(31,129,109,.3)",
+    };
+    const response = await fetchImage(params);
+    assert.ok(response.ok);
+    const imageBuffer = await response.buffer();
+    await compareImage({ imageName, imageBuffer });
+  });
+
   it("should change background color with hex", async () => {
     const imageName = "backgroundColorHex";
     const params = {
