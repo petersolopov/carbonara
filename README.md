@@ -95,7 +95,7 @@ Running development server:
 
 ```bash
 docker build -t local/carbonara .
-docker run -v $(pwd):/home/pptruser/app/ -p 3000:3000 -it --rm --cap-add=SYS_ADMIN $(docker build -q .) npm run nodemon
+docker run -v $(pwd):/home/pptruser/app/ -p 3000:3000 -it --rm --cap-add=SYS_ADMIN local/carbonara npm run nodemon
 ```
 
 Updating test images:
