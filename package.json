@@ -3,6 +3,9 @@
   "version": "0.0.1",
   "description": "api for carbon",
   "main": "src/index.js",
+  "engines": {
+    "node": ">=12"
+  },
   "scripts": {
     "test": "mocha --timeout 10000",
     "start": "node src/index.js",
