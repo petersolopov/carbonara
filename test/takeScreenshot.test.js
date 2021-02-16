@@ -521,4 +521,33 @@ describe("POST /api/cook", () => {
       "option 'theme' has type 'boolean', but 'string' expected"
     );
   });
+
+  it("should change watermark", async () => {
+    const imageName = "watermark";
+    const params = {
+      code: "const sum = (a, b) => a + b",
+      watermark: true,
+    };
+    const response = await fetchImage(params);
+    assert.ok(response.ok);
+    const imageBuffer = await response.buffer();
+    await compareImage({ imageName, imageBuffer });
+  });
+
+  it("should validate watermark", async () => {
+    const imageName = "pandaTheme";
+    const params = {
+      code: "const sum = (a, b) => a + b",
+      watermark: "true",
+    };
+
+    const response = await fetchImage(params);
+    assert.ok(!response.ok);
+
+    const body = await response.json();
+    assert.strictEqual(
+      body.error,
+      "option 'watermark' has type 'string', but 'boolean' expected"
+    );
+  });
 });
