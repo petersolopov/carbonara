@@ -492,4 +492,33 @@ describe("POST /api/cook", () => {
       "option 'paddingVertical' has type 'boolean', but 'string' expected"
     );
   });
+
+  it("should change theme", async () => {
+    const imageName = "pandaTheme";
+    const params = {
+      code: "const sum = (a, b) => a + b",
+      theme: "panda-syntax",
+    };
+    const response = await fetchImage(params);
+    assert.ok(response.ok);
+    const imageBuffer = await response.buffer();
+    await compareImage({ imageName, imageBuffer });
+  });
+
+  it("should validate theme", async () => {
+    const imageName = "pandaTheme";
+    const params = {
+      code: "const sum = (a, b) => a + b",
+      theme: true,
+    };
+
+    const response = await fetchImage(params);
+    assert.ok(!response.ok);
+
+    const body = await response.json();
+    assert.strictEqual(
+      body.error,
+      "option 'theme' has type 'boolean', but 'string' expected"
+    );
+  });
 });
