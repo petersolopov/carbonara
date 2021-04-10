@@ -20,8 +20,8 @@
   "author": "Peter Solopov <peter@solopov.dev>",
   "license": "MIT",
   "dependencies": {
-    "chrome-aws-lambda": "^3.0.4",
-    "puppeteer-core": "^3.0.4",
+    "chrome-aws-lambda": "^8.0.2",
+    "puppeteer-core": "^8.0.0",
     "raw-body": "^2.4.1"
   },
   "devDependencies": {
