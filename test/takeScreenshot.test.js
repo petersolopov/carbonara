@@ -506,7 +506,6 @@ describe("POST /api/cook", () => {
   });
 
   it("should validate theme", async () => {
-    const imageName = "pandaTheme";
     const params = {
       code: "const sum = (a, b) => a + b",
       theme: true,
@@ -535,7 +534,6 @@ describe("POST /api/cook", () => {
   });
 
   it("should validate watermark", async () => {
-    const imageName = "pandaTheme";
     const params = {
       code: "const sum = (a, b) => a + b",
       watermark: "true",
