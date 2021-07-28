@@ -576,4 +576,32 @@ describe("POST /api/cook", () => {
       "option 'widthAdjustment' has type 'string', but 'boolean' expected"
     );
   });
+
+  it("should change windowControls", async () => {
+    const imageName = "windowControls";
+    const params = {
+      code: "const sum = (a, b) => a + b",
+      windowControls: false,
+    };
+    const response = await fetchImage(params);
+    assert.ok(response.ok);
+    const imageBuffer = await response.buffer();
+    await compareImage({ imageName, imageBuffer });
+  });
+
+  it("should validate windowControls", async () => {
+    const params = {
+      code: "const sum = (a, b) => a + b",
+      windowControls: "false",
+    };
+
+    const response = await fetchImage(params);
+    assert.ok(!response.ok);
+
+    const body = await response.json();
+    assert.strictEqual(
+      body.error,
+      "option 'windowControls' has type 'string', but 'boolean' expected"
+    );
+  });
 });
