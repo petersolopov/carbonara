@@ -604,4 +604,44 @@ describe("POST /api/cook", () => {
       "option 'windowControls' has type 'string', but 'boolean' expected"
     );
   });
+
+  it("should change windowTheme to sharp", async () => {
+    const imageName = "windowTheme-sharp";
+    const params = {
+      code: "const sum = (a, b) => a + b",
+      windowTheme: "sharp",
+    };
+    const response = await fetchImage(params);
+    assert.ok(response.ok);
+    const imageBuffer = await response.buffer();
+    await compareImage({ imageName, imageBuffer });
+  });
+
+  it("should change windowTheme to bw", async () => {
+    const imageName = "windowTheme-bw";
+    const params = {
+      code: "const sum = (a, b) => a + b",
+      windowTheme: "bw",
+    };
+    const response = await fetchImage(params);
+    assert.ok(response.ok);
+    const imageBuffer = await response.buffer();
+    await compareImage({ imageName, imageBuffer });
+  });
+
+  it("should validate windowTheme", async () => {
+    const params = {
+      code: "const sum = (a, b) => a + b",
+      windowTheme: true,
+    };
+
+    const response = await fetchImage(params);
+    assert.ok(!response.ok);
+
+    const body = await response.json();
+    assert.strictEqual(
+      body.error,
+      "option 'windowTheme' has type 'boolean', but 'string' expected"
+    );
+  });
 });
