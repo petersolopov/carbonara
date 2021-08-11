@@ -5,6 +5,7 @@ const {
   createSearchString,
   validateBody,
   defaultOptions,
+  prettifyCode,
 } = require("./utils.js");
 
 module.exports = async (ctx) => {
@@ -33,6 +34,10 @@ module.exports = async (ctx) => {
     res.statusCode = 400;
     res.end(JSON.stringify({ error: error.message }));
     return;
+  }
+
+  if (body.prettify) {
+    body.code = prettifyCode(body.code);
   }
 
   const page = await browser.newPage();

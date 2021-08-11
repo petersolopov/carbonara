@@ -644,4 +644,43 @@ describe("POST /api/cook", () => {
       "option 'windowTheme' has type 'boolean', but 'string' expected"
     );
   });
+
+  it("should validate prettify", async () => {
+    const params = {
+      code: "const sum = (a, b) => a + b",
+      prettify: "true",
+    };
+
+    const response = await fetchImage(params);
+    assert.ok(!response.ok);
+
+    const body = await response.json();
+    assert.strictEqual(
+      body.error,
+      "option 'prettify' has type 'string', but 'boolean' expected"
+    );
+  });
+
+  it("should not prettify by default", async () => {
+    const imageName = "not-prettify";
+    const params = {
+      code: "const  sum = (a,b) => a+ b",
+    };
+    const response = await fetchImage(params);
+    assert.ok(response.ok);
+    const imageBuffer = await response.buffer();
+    await compareImage({ imageName, imageBuffer });
+  });
+
+  it("should prettify code", async () => {
+    const imageName = "prettify";
+    const params = {
+      code: "const  sum = (a,b) => a+ b",
+      prettify: true,
+    };
+    const response = await fetchImage(params);
+    assert.ok(response.ok);
+    const imageBuffer = await response.buffer();
+    await compareImage({ imageName, imageBuffer });
+  });
 });

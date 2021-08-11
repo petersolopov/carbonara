@@ -1,3 +1,5 @@
+const prettier = require("prettier");
+
 const defaultOptions = {
   backgroundColor: "rgba(171, 184, 195, 1)",
   code: "",
@@ -19,6 +21,7 @@ const defaultOptions = {
   widthAdjustment: true,
   windowControls: true,
   windowTheme: "none",
+  prettify: false,
 };
 
 const optionToQueryParam = {
@@ -91,14 +94,35 @@ const createSearchString = (options) => {
   const mergedOptions = { ...defaultOptions, ...options };
 
   return Object.keys(mergedOptions).reduce((acc, key) => {
-    const queryParam = [optionToQueryParam[key]];
+    const queryParam = optionToQueryParam[key];
+
+    // some options do not exist in query string, like "prettify"
+    if (!queryParam) {
+      return acc;
+    }
+
     const value = mergedOptions[key];
     return `${acc}&${queryParam}=${encodeURIComponent(value)}`;
   }, "?");
+};
+
+const prettifyCode = (code) => {
+  try {
+    // options like in carbon
+    // https://github.com/carbon-app/carbon/blob/main/lib/util.js#L86
+    return prettier.format(code, {
+      semi: false,
+      singleQuote: true,
+      parser: "babel",
+    });
+  } catch {
+    return code;
+  }
 };
 
 module.exports = {
   createSearchString,
   defaultOptions,
   validateBody,
+  prettifyCode,
 };
