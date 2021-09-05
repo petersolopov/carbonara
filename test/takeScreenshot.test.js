@@ -683,4 +683,26 @@ describe("POST /api/cook", () => {
     const imageBuffer = await response.buffer();
     await compareImage({ imageName, imageBuffer });
   });
+
+  it("should work with chinese language", async () => {
+    const imageName = "chinese";
+    const params = {
+      code: "中文",
+    };
+    const response = await fetchImage(params);
+    assert.ok(response.ok);
+    const imageBuffer = await response.buffer();
+    await compareImage({ imageName, imageBuffer });
+  });
+
+  it("should work with russian language", async () => {
+    const imageName = "russian";
+    const params = {
+      code: "русский язык",
+    };
+    const response = await fetchImage(params);
+    assert.ok(response.ok);
+    const imageBuffer = await response.buffer();
+    await compareImage({ imageName, imageBuffer });
+  });
 });

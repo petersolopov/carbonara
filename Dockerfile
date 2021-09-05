@@ -18,6 +18,12 @@ RUN apk --update add --no-cache \
       ttf-freefont \
       ttf-liberation
 
+# support chinese language
+RUN apk add wqy-zenhei \
+    --update-cache \
+    --repository http://nl.alpinelinux.org/alpine/edge/testing \
+    --allow-untrusted
+
 # Add user so we don't need --no-sandbox.
 RUN addgroup -S pptruser && adduser -S -g pptruser pptruser \
     && mkdir -p /home/pptruser/Downloads /app \
