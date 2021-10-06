@@ -75,14 +75,14 @@ These options exist in exported config but there is not a possibility pass them 
 Running the server in 3000 port with docker:
 
 ```bash
-docker run -p 3000:3000 -it --cap-add=SYS_ADMIN petersolopov/carbonara
+docker run -p 3000:3000 -it petersolopov/carbonara
 ```
 
 ## Running test
 
 ```bash
 docker build -t local/carbonara .
-docker run -it --rm --cap-add=SYS_ADMIN local/carbonara npm test
+docker run -it --rm local/carbonara npm test
 ```
 
 ## Development
@@ -96,14 +96,14 @@ Running development server:
 
 ```bash
 docker build -t local/carbonara .
-docker run -v $(pwd):/home/pptruser/app/ -p 3000:3000 -it --rm --cap-add=SYS_ADMIN local/carbonara npm run nodemon
+docker run -v $(pwd):/home/pptruser/app/ -p 3000:3000 -it --rm local/carbonara npm run nodemon
 ```
 
 Updating test images:
 
 ```bash
 docker build -t local/carbonara .
-docker run -v $(pwd):/home/pptruser/app/ -it --rm --cap-add=SYS_ADMIN local/carbonara npm test
+docker run -v $(pwd):/home/pptruser/app/ -it --rm local/carbonara npm test
 ```
 
 ## LICENSE

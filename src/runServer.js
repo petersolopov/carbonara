@@ -8,6 +8,11 @@ async function runServer() {
   const base = `${config.server.protocol}://${config.server.host}:${config.server.port}`;
 
   const browser = await puppeteer.launch({
+    args: [
+      "--disable-dev-shm-usage",
+      "--no-sandbox",
+      "--disable-setuid-sandbox",
+    ],
     executablePath: "/usr/bin/chromium-browser",
   });
 

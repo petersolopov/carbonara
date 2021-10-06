@@ -12,7 +12,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - run: docker build -t local/carbonara .
-      - run: docker run -v $(pwd)/test/images:/home/pptruser/app/test/images --rm --cap-add=SYS_ADMIN  local/carbonara npm test
+      - run: docker run -v $(pwd)/test/images:/home/pptruser/app/test/images --rm local/carbonara npm test
 
       - uses: actions/upload-artifact@v2
         if: failure()
