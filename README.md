@@ -4,7 +4,7 @@ API for [carbon](https://carbon.now.sh/).
 
 ## Getting started
 
-Send POST `https://carbonara.vercel.app/api/cook` to take an image of code snippet.
+Send POST `https://carbonara-42.herokuapp.com/api/cook` to take an image of code snippet.
 
 ## How it works
 
@@ -48,7 +48,7 @@ Send POST `https://carbonara.vercel.app/api/cook` to take an image of code snipp
 Creating image and saving to `code.png` in terminal.
 
 ```bash
-curl -L https://carbonara.vercel.app/api/cook \
+curl -L https://carbonara-42.herokuapp.com/api/cook \
 -X POST \
 -H 'Content-Type: application/json' \
 -d '{
