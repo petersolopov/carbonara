@@ -66,6 +66,8 @@ jobs:
           vercel-project-id: ${{ secrets.ZEIT_PROJECT_ID}}
 
   heroku:
+    needs: [lint, test]
+
     runs-on: ubuntu-latest
     if: github.event_name == 'push'
 
