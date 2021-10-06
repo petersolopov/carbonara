@@ -89,7 +89,7 @@ docker run -it --rm local/carbonara npm test
 
 There are two main files:
 
-- `api/cook.js` — lambda function that running in production.
+- `api/cook.js` — lambda function (deprecated).
 - `src/index.js` – nodejs server that running in docker container.
 
 Running development server:
