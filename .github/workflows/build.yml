@@ -65,8 +65,22 @@ jobs:
           vercel-org-id: ${{ secrets.ZEIT_ORG_ID}}
           vercel-project-id: ${{ secrets.ZEIT_PROJECT_ID}}
 
+  heroku:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: akhileshns/heroku-deploy@v3.12.12
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: "carbonara-42"
+          heroku_email: ${{secrets.HEROKU_EMAIL}}
+          usedocker: true
+          dontautocreate: true
+
   notify:
-    needs: [lint, test, push, deploy]
+    needs: [lint, test, push, deploy, heroku]
 
     runs-on: ubuntu-latest
     if: github.event_name == 'push' && failure()
