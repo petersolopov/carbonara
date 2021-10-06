@@ -24,6 +24,13 @@ RUN apk add wqy-zenhei \
     --repository http://nl.alpinelinux.org/alpine/edge/testing \
     --allow-untrusted
 
+# support emoji
+RUN apk add font-noto-emoji \
+    --update-cache \
+    --repository http://nl.alpinelinux.org/alpine/edge/community \
+    --allow-untrusted
+COPY local.conf /etc/fonts/local.conf
+
 # Add user so we don't need --no-sandbox.
 RUN addgroup -S pptruser && adduser -S -g pptruser pptruser \
     && mkdir -p /home/pptruser/Downloads /app \

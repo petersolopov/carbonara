@@ -705,4 +705,15 @@ describe("POST /api/cook", () => {
     const imageBuffer = await response.buffer();
     await compareImage({ imageName, imageBuffer });
   });
+
+  it("should support emoji", async () => {
+    const imageName = "emoji";
+    const params = {
+      code: "😎 🤩 😱 🍝",
+    };
+    const response = await fetchImage(params);
+    assert.ok(response.ok);
+    const imageBuffer = await response.buffer();
+    await compareImage({ imageName, imageBuffer });
+  });
 });
