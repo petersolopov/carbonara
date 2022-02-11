@@ -1,8 +1,7 @@
-const getRawBody = require("raw-body");
-
 const config = require("./config.js");
 const {
   createSearchString,
+  parseBody,
   validateBody,
   defaultOptions,
   prettifyCode,
@@ -13,21 +12,7 @@ module.exports = async (ctx) => {
 
   let body;
   try {
-    const isContentTypeJSON =
-      req.headers["content-type"] &&
-      req.headers["content-type"].includes("application/json");
-
-    if (!isContentTypeJSON) {
-      throw new Error("body should be a JSON");
-    }
-
-    const rawBody = await getRawBody(req, {
-      length: req.headers["content-length"],
-      limit: "1mb",
-      encoding: true,
-    });
-
-    body = JSON.parse(rawBody);
+    body = await parseBody(req);
     validateBody(body);
   } catch (error) {
     res.setHeader("Content-Type", "application/json");
@@ -64,6 +49,23 @@ module.exports = async (ctx) => {
 
   // without timeout screenshots are flaky. 1px transparent bottom line randomly is appeared
   await page.waitForTimeout(100);
+
+  if (body.fontUpload) {
+    await page.addStyleTag({
+      content: `
+        @font-face {
+          font-family: user-custom;
+          src: url(data:application/octet-stream;base64,${body.fontUpload}) format('woff');
+          font-display: swap;
+        }
+      `
+    });
+
+    await page.evaluate(() => {
+      const cm = document.querySelector('.CodeMirror');
+      cm.setAttribute('style', 'font-family: user-custom !important');
+    });
+  }
 
   const element = await page.$(config.carbon.imageQuerySelector);
   const image = await element.screenshot({
