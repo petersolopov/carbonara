@@ -27,7 +27,7 @@
   },
   "devDependencies": {
     "mocha": "^7.1.2",
-    "node-fetch": "^2.6.1",
+    "node-fetch": "^2.6.7",
     "nodemon": "^2.0.3",
     "now": "^19.0.0",
     "pixelmatch": "^5.2.0",
