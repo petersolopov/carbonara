@@ -62,6 +62,9 @@ module.exports = async (ctx) => {
     document.querySelector(".white").style.background = "none";
   });
 
+  // without timeout screenshots are flaky. 1px transparent bottom line randomly is appeared
+  await page.waitForTimeout(100);
+
   const element = await page.$(config.carbon.imageQuerySelector);
   const image = await element.screenshot({
     omitBackground: true,
