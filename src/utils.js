@@ -1,6 +1,6 @@
 const getRawBody = require("raw-body");
 const formidable = require("formidable");
-const fs = require('fs');
+const fs = require("fs");
 const prettier = require("prettier");
 
 const defaultOptions = {
@@ -133,9 +133,9 @@ const validateBody = (body) => {
 
     const expectedType = typeof defaultOptions[option];
     switch (expectedType) {
-	    case "boolean":
-	    	body[option] = body[option] == "true";
-		 break;
+      case "boolean":
+        body[option] = body[option] == "true";
+        break;
     }
     const type = typeof body[option];
 

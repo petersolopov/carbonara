@@ -58,12 +58,12 @@ module.exports = async (ctx) => {
           src: url(data:application/octet-stream;base64,${body.fontCustom}) format('woff');
           font-display: swap;
         }
-      `
+      `,
     });
 
     await page.evaluate(() => {
-      const cm = document.querySelector('.CodeMirror');
-      cm.setAttribute('style', 'font-family: user-custom !important');
+      const cm = document.querySelector(".CodeMirror");
+      cm.setAttribute("style", "font-family: user-custom !important");
     });
   }
 
