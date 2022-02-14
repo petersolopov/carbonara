@@ -24,7 +24,7 @@ Send POST `https://carbonara-42.herokuapp.com/api/cook` to take an image of code
 | `dropShadowBlurRadius` | `"68px"`                   | string                    | shadow blur radius                                                                                                                                                      |
 | `dropShadowOffsetY`    | `"20px"`                   | string                    | shadow offset y                                                                                                                                                         |
 | `exportSize`           | `"2x"`                     | string                    | resolution of exported image, e.g. `1x`, `3x`                                                                                                                           |
-| `font`                 | `""`                       | string                    | custom font's contents                                                                                                                                                  |
+| `fontCustom`           | `""`                       | string                    | custom font's contents                                                                                                                                                  |
 | `fontSize`             | `"14px"`                   | string                    | font size                                                                                                                                                               |
 | `fontFamily`           | `"Hack"`                   | string                    | font family, e.g. `JetBrains Mono`, `Fira Code`. See all names in carbon <a href="#easy-way-to-tune-image">exported config</a>.                                         |
 | `firstLineNumber`      | `1`                        | number                    | first line number                                                                                                                                                       |
@@ -66,7 +66,7 @@ curl -L https://carbonara-42.herokuapp.com/api/cook \
 -X POST \
 -H 'Content-Type: multipart/form-data' \
 -F code="export default const sum = (a, b) => a + b" \
--F font=@my-custom-font.ttf \
+-F customFont=$(base64 < my-custom-font.ttf) \
 -F backgroundColor="#1F816D" \
 > code.png
 ```

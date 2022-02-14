@@ -50,12 +50,12 @@ module.exports = async (ctx) => {
   // without timeout screenshots are flaky. 1px transparent bottom line randomly is appeared
   await page.waitForTimeout(100);
 
-  if (body.fontUpload) {
+  if (body.fontCustom) {
     await page.addStyleTag({
       content: `
         @font-face {
           font-family: user-custom;
-          src: url(data:application/octet-stream;base64,${body.fontUpload}) format('woff');
+          src: url(data:application/octet-stream;base64,${body.fontCustom}) format('woff');
           font-display: swap;
         }
       `

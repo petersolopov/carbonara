@@ -67,7 +67,7 @@ const ignoredOptions = [
   // add support
   "selectedLines",
 
-  "fontUpload",
+  "fontCustom",
 ];
 
 const ContentTypeApplicationJson = "application/json";
@@ -100,20 +100,15 @@ async function parseBody(req) {
     });
     return Promise.resolve(JSON.parse(rawBody));
   }
+
   if (contentType == ContentTypeMultipartFormData) {
     return new Promise((resolve, reject) => {
-      const form = formidable();
-      form.parse(req, (err, fields, files) => {
+      const form = formidable({
+        filter: () => false, // disable file upload
+      });
+      form.parse(req, (err, fields) => {
         if (err) {
           return reject(err);
-        }
-        const codeUpload = files["code"]
-        if (codeUpload) {
-          fields.code = fs.readFileSync(codeUpload.filepath, {encoding: "utf-8"});
-        }
-        const fontUpload = files["font"]
-        if (fontUpload) {
-          fields.fontUpload = fs.readFileSync(fontUpload.filepath, {encoding: "base64"});
         }
         resolve(fields);
       });
