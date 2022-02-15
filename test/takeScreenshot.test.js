@@ -1,4 +1,5 @@
 const fetch = require("node-fetch");
+const formData = require("form-data")
 const assert = require("assert");
 const fs = require("fs").promises;
 const PNG = require("pngjs").PNG;
@@ -68,6 +69,28 @@ async function fetchImage(params) {
   return response;
 }
 
+async function fetchImageMultipart(params) {
+  const multipartFormData = new formData();
+  for (const [key, value] of Object.entries(params)) {
+    multipartFormData.append(key, value);
+  }
+
+  const response = await fetch(endpoint, {
+    method: "POST",
+    body: multipartFormData,
+    headers: {
+      "Content-Type": `multipart/form-data;boundary=${multipartFormData.getBoundary()}`
+    },
+  });
+  return response;
+}
+
+async function loadFont(fontName) {
+  fs
+    .readFile(`./test/fonts/${fontName}`)
+    .toString("base64");
+}
+
 describe("POST /api/cook", () => {
   before(async () => {
     const { server, browser } = await runServer();
@@ -88,6 +111,15 @@ describe("POST /api/cook", () => {
     const imageName = "default";
     const params = { code: "const sum = (a, b) => a + b" };
     const response = await fetchImage(params);
+    assert.ok(response.ok);
+    const imageBuffer = await response.buffer();
+    await compareImage({ imageName, imageBuffer });
+  });
+
+  it("should create default image using multipart/form-data content type", async () => {
+    const imageName = "default";
+    const params = { code: "const sum = (a, b) => a + b" };
+    const response = await fetchImageMultipart(params);
     assert.ok(response.ok);
     const imageBuffer = await response.buffer();
     await compareImage({ imageName, imageBuffer });
