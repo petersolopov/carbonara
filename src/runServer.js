@@ -1,5 +1,4 @@
 const http = require("http");
-const formidable = require("formidable");
 const puppeteer = require("puppeteer-core");
 
 const takeScreenshot = require("./takeScreenshot.js");
