@@ -1,5 +1,5 @@
 const fetch = require("node-fetch");
-const formData = require("form-data")
+const formData = require("form-data");
 const assert = require("assert");
 const fs = require("fs").promises;
 const PNG = require("pngjs").PNG;
@@ -79,16 +79,14 @@ async function fetchImageMultipart(params) {
     method: "POST",
     body: multipartFormData,
     headers: {
-      "Content-Type": `multipart/form-data;boundary=${multipartFormData.getBoundary()}`
+      "Content-Type": `multipart/form-data;boundary=${multipartFormData.getBoundary()}`,
     },
   });
   return response;
 }
 
 async function loadFont(fontName) {
-  fs
-    .readFile(`./test/fonts/${fontName}`)
-    .toString("base64");
+  fs.readFile(`./test/fonts/${fontName}`).toString("base64");
 }
 
 describe("POST /api/cook", () => {
@@ -742,6 +740,45 @@ describe("POST /api/cook", () => {
     const imageName = "emoji";
     const params = {
       code: "😎 🤩 😱 🍝",
+    };
+    const response = await fetchImage(params);
+    assert.ok(response.ok);
+    const imageBuffer = await response.buffer();
+    await compareImage({ imageName, imageBuffer });
+  });
+
+  it("should accept custom user font in TTF format", async () => {
+    const fontCustom = await loadFont("JetBrainsMono-Bold.ttf");
+    const imageName = "fontCustomTTF";
+    const params = {
+      code: "const sum = (a, b) => a + b",
+      fontCustom: fontCustom,
+    };
+    const response = await fetchImage(params);
+    assert.ok(response.ok);
+    const imageBuffer = await response.buffer();
+    await compareImage({ imageName, imageBuffer });
+  });
+
+  it("should accept custom user font in WOFF format", async () => {
+    const fontCustom = await loadFont("JetBrainsMono-Italic.woff");
+    const imageName = "fontCustomWOFF";
+    const params = {
+      code: "const sum = (a, b) => a + b",
+      fontCustom: fontCustom,
+    };
+    const response = await fetchImage(params);
+    assert.ok(response.ok);
+    const imageBuffer = await response.buffer();
+    await compareImage({ imageName, imageBuffer });
+  });
+
+  it("should accept custom user font in WOFF2 format", async () => {
+    const fontCustom = await loadFont("JetBrainsMono-Regular.woff2");
+    const imageName = "fontCustomWOFF2";
+    const params = {
+      code: "const sum = (a, b) => a + b",
+      fontCustom: fontCustom,
     };
     const response = await fetchImage(params);
     assert.ok(response.ok);
