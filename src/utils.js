@@ -110,12 +110,38 @@ async function parseBody(req) {
         if (err) {
           return reject(err);
         }
-        resolve(fields);
+        const sanitizedFields = sanitizeFields(fields);
+        resolve(sanitizedFields);
       });
     });
   }
   throw new Error("unknown request content type");
 }
+
+const sanitizeFields = (fields) => {
+  sanitizedFields = Object.entries(fields).map(([key, value]) => {
+    const expectedType = typeof defaultOptions[key] || "string";
+    return [key, sanitizeString(value, expectedType)];
+  });
+
+  return Object.fromEntries(sanitizedFields);
+};
+
+const sanitizeString = (value, type) => {
+  if (type == "boolean") {
+    return booleanizeString(value);
+  }
+  return value;
+};
+
+const booleanizeString = (value) => {
+  if (value == "true") {
+    return true;
+  } else if (value == "false") {
+    return false;
+  }
+  return value;
+};
 
 const validateBody = (body) => {
   if (!body.code) {
@@ -132,11 +158,6 @@ const validateBody = (body) => {
     }
 
     const expectedType = typeof defaultOptions[option];
-    switch (expectedType) {
-      case "boolean":
-        body[option] = body[option] == "true";
-        break;
-    }
     const type = typeof body[option];
 
     if (type !== expectedType) {
