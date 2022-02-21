@@ -115,8 +115,8 @@ describe("POST /api/cook", () => {
     await compareImage({ imageName, imageBuffer });
   });
 
-  it("should create default image using multipart/form-data", async () => {
-    const imageName = "default";
+  it("should create default image (multipart)", async () => {
+    const imageName = "defaultMultipart";
     const params = { code: "const sum = (a, b) => a + b" };
     const response = await fetchImageMultipart(params);
     assert.ok(response.ok);
@@ -761,9 +761,9 @@ describe("POST /api/cook", () => {
     await compareImage({ imageName, imageBuffer });
   });
 
-  it("should accept custom TTF font using multipart/form-data", async () => {
+  it("should accept custom TTF font (multipart)", async () => {
     const fontCustom = await loadFont("JetBrainsMono-Bold.ttf");
-    const imageName = "fontCustomTTF";
+    const imageName = "fontCustomTTFMultipart";
     const params = {
       code: "const sum = (a, b) => a + b",
       fontCustom: fontCustom,
