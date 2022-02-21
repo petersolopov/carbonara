@@ -87,7 +87,7 @@ async function fetchImageMultipart(params) {
 
 async function loadFont(fontName) {
   const buffer = await fs.readFile(`./test/fonts/${fontName}`);
-  return Promise.resolve(buffer.toString("base64"));
+  return buffer.toString("base64");
 }
 
 describe("POST /api/cook", () => {
@@ -115,7 +115,7 @@ describe("POST /api/cook", () => {
     await compareImage({ imageName, imageBuffer });
   });
 
-  it("should create default image (multipart)", async () => {
+  it("should create default image using multipart/form-data", async () => {
     const imageName = "default";
     const params = { code: "const sum = (a, b) => a + b" };
     const response = await fetchImageMultipart(params);
@@ -761,7 +761,7 @@ describe("POST /api/cook", () => {
     await compareImage({ imageName, imageBuffer });
   });
 
-  it("should accept custom TTF font (multipart)", async () => {
+  it("should accept custom TTF font using multipart/form-data", async () => {
     const fontCustom = await loadFont("JetBrainsMono-Bold.ttf");
     const imageName = "fontCustomTTF";
     const params = {

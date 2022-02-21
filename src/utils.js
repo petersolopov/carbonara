@@ -1,6 +1,5 @@
 const getRawBody = require("raw-body");
 const formidable = require("formidable");
-const fs = require("fs");
 const prettier = require("prettier");
 
 const defaultOptions = {
@@ -119,7 +118,7 @@ async function parseBody(req) {
 }
 
 const sanitizeFields = (fields) => {
-  sanitizedFields = Object.entries(fields).map(([key, value]) => {
+  const sanitizedFields = Object.entries(fields).map(([key, value]) => {
     const expectedType = typeof defaultOptions[key] || "string";
     return [key, sanitizeString(value, expectedType)];
   });
@@ -128,16 +127,16 @@ const sanitizeFields = (fields) => {
 };
 
 const sanitizeString = (value, type) => {
-  if (type == "boolean") {
+  if (type === "boolean") {
     return booleanizeString(value);
   }
   return value;
 };
 
 const booleanizeString = (value) => {
-  if (value == "true") {
+  if (value === "true") {
     return true;
-  } else if (value == "false") {
+  } else if (value === "false") {
     return false;
   }
   return value;
