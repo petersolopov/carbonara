@@ -1,4 +1,5 @@
 const fetch = require("node-fetch");
+const formData = require("form-data");
 const assert = require("assert");
 const fs = require("fs").promises;
 const PNG = require("pngjs").PNG;
@@ -68,6 +69,27 @@ async function fetchImage(params) {
   return response;
 }
 
+async function fetchImageMultipart(params) {
+  const multipartFormData = new formData();
+  for (const [key, value] of Object.entries(params)) {
+    multipartFormData.append(key, value);
+  }
+
+  const response = await fetch(endpoint, {
+    method: "POST",
+    body: multipartFormData,
+    headers: {
+      "Content-Type": `multipart/form-data;boundary=${multipartFormData.getBoundary()}`,
+    },
+  });
+  return response;
+}
+
+async function loadFont(fontName) {
+  const buffer = await fs.readFile(`./test/fonts/${fontName}`);
+  return buffer.toString("base64");
+}
+
 describe("POST /api/cook", () => {
   before(async () => {
     const { server, browser } = await runServer();
@@ -88,6 +110,15 @@ describe("POST /api/cook", () => {
     const imageName = "default";
     const params = { code: "const sum = (a, b) => a + b" };
     const response = await fetchImage(params);
+    assert.ok(response.ok);
+    const imageBuffer = await response.buffer();
+    await compareImage({ imageName, imageBuffer });
+  });
+
+  it("should create default image (multipart)", async () => {
+    const imageName = "defaultMultipart";
+    const params = { code: "const sum = (a, b) => a + b" };
+    const response = await fetchImageMultipart(params);
     assert.ok(response.ok);
     const imageBuffer = await response.buffer();
     await compareImage({ imageName, imageBuffer });
@@ -710,6 +741,58 @@ describe("POST /api/cook", () => {
     const imageName = "emoji";
     const params = {
       code: "😎 🤩 😱 🍝",
+    };
+    const response = await fetchImage(params);
+    assert.ok(response.ok);
+    const imageBuffer = await response.buffer();
+    await compareImage({ imageName, imageBuffer });
+  });
+
+  it("should accept custom TTF font", async () => {
+    const fontCustom = await loadFont("JetBrainsMono-Bold.ttf");
+    const imageName = "fontCustomTTF";
+    const params = {
+      code: "const sum = (a, b) => a + b",
+      fontCustom: fontCustom,
+    };
+    const response = await fetchImage(params);
+    assert.ok(response.ok);
+    const imageBuffer = await response.buffer();
+    await compareImage({ imageName, imageBuffer });
+  });
+
+  it("should accept custom TTF font (multipart)", async () => {
+    const fontCustom = await loadFont("JetBrainsMono-Bold.ttf");
+    const imageName = "fontCustomTTFMultipart";
+    const params = {
+      code: "const sum = (a, b) => a + b",
+      fontCustom: fontCustom,
+    };
+    const response = await fetchImageMultipart(params);
+    assert.ok(response.ok);
+    const imageBuffer = await response.buffer();
+    await compareImage({ imageName, imageBuffer });
+  });
+
+  it("should accept custom WOFF font", async () => {
+    const fontCustom = await loadFont("JetBrainsMono-Italic.woff");
+    const imageName = "fontCustomWOFF";
+    const params = {
+      code: "const sum = (a, b) => a + b",
+      fontCustom: fontCustom,
+    };
+    const response = await fetchImage(params);
+    assert.ok(response.ok);
+    const imageBuffer = await response.buffer();
+    await compareImage({ imageName, imageBuffer });
+  });
+
+  it("should accept custom WOFF2 font", async () => {
+    const fontCustom = await loadFont("JetBrainsMono-Regular.woff2");
+    const imageName = "fontCustomWOFF2";
+    const params = {
+      code: "const sum = (a, b) => a + b",
+      fontCustom: fontCustom,
     };
     const response = await fetchImage(params);
     assert.ok(response.ok);
