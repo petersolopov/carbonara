@@ -580,6 +580,35 @@ describe("POST /api/cook", () => {
     );
   });
 
+  it("should change width", async () => {
+    const imageName = "width";
+    const params = {
+      code: "const sum = (a, b) => a + b",
+      widthAdjustment: false,
+      width: 1000,
+    };
+    const response = await fetchImage(params);
+    assert.ok(response.ok);
+    const imageBuffer = await response.buffer();
+    await compareImage({ imageName, imageBuffer });
+  });
+
+  it("should validate width", async () => {
+    const params = {
+      code: "const sum = (a, b) => a + b",
+      width: "250px",
+    };
+
+    const response = await fetchImage(params);
+    assert.ok(!response.ok);
+
+    const body = await response.json();
+    assert.strictEqual(
+      body.error,
+      "option 'width' has type 'string', but 'number' expected"
+    );
+  });
+
   it("should change widthAdjustment", async () => {
     const imageName = "widthAdjustment";
     const params = {

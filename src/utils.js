@@ -20,6 +20,7 @@ const defaultOptions = {
   squaredImage: false,
   theme: "seti",
   watermark: false,
+  width: 536,
   widthAdjustment: true,
   windowControls: true,
   windowTheme: "none",
@@ -44,6 +45,7 @@ const optionToQueryParam = {
   squaredImage: "si",
   theme: "t",
   watermark: "wm",
+  width: "width",
   widthAdjustment: "wa",
   windowControls: "wc",
   windowTheme: "wt",
@@ -61,7 +63,6 @@ const ignoredOptions = [
   "loading",
   "icon",
   "isVisible",
-  "width",
 
   // add support
   "selectedLines",
@@ -129,7 +130,10 @@ const sanitizeFields = (fields) => {
 const sanitizeString = (value, type) => {
   if (type === "boolean") {
     return booleanizeString(value);
+  } else if (type === "number") {
+    return numberizeString(value);
   }
+
   return value;
 };
 
@@ -140,6 +144,10 @@ const booleanizeString = (value) => {
     return false;
   }
   return value;
+};
+
+const numberizeString = (value) => {
+  return parseInt(value);
 };
 
 const validateBody = (body) => {
