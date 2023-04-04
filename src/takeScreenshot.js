@@ -47,8 +47,8 @@ module.exports = async (ctx) => {
     document.querySelector(".white").style.background = "none";
   });
 
-  // without timeout screenshots are flaky. 1px transparent bottom line randomly is appeared
-  await page.waitForTimeout(100);
+  // without timeout screenshots are flaky. 10px transparent bottom line randomly is appeared
+  await page.waitForTimeout(300);
 
   if (body.fontCustom) {
     await page.addStyleTag({
