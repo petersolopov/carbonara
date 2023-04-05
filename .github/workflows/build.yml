@@ -51,7 +51,6 @@ jobs:
           docker build --file Dockerfile --build-arg npm-ci-params="--only=production" -t petersolopov/carbonara .
           docker push petersolopov/carbonara:latest
 
-
   deploy:
     needs: [lint, test]
 
@@ -63,7 +62,6 @@ jobs:
         run: |
           curl -s ${{ secrets.DEPLOY_HOOK }} \
           > /dev/null
-
 
   notify:
     needs: [lint, test, push, deploy]
