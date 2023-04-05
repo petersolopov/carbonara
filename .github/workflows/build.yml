@@ -52,24 +52,21 @@ jobs:
           docker push petersolopov/carbonara:latest
 
 
-  heroku:
+  deploy:
     needs: [lint, test]
 
     runs-on: ubuntu-latest
     if: github.event_name == 'push'
 
     steps:
-      - uses: actions/checkout@v2
-      - uses: akhileshns/heroku-deploy@v3.12.12
-        with:
-          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-          heroku_app_name: "carbonara-42"
-          heroku_email: ${{secrets.HEROKU_EMAIL}}
-          usedocker: true
-          dontautocreate: true
+      - name: deploy
+        run: |
+          curl -s ${{ secrets.DEPLOY_HOOK }} \
+          > /dev/null
+
 
   notify:
-    needs: [lint, test, push, deploy, heroku]
+    needs: [lint, test, push, deploy]
 
     runs-on: ubuntu-latest
     if: github.event_name == 'push' && failure()
