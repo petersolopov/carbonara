@@ -43,6 +43,7 @@ const optionToQueryParam = {
   paddingHorizontal: "ph",
   paddingVertical: "pv",
   squaredImage: "si",
+  selectedLines: "sl",
   theme: "t",
   watermark: "wm",
   width: "width",
